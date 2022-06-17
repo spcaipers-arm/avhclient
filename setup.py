@@ -5,7 +5,6 @@ import subprocess
 
 from setuptools import setup, find_namespace_packages
 
-
 def version_from_git_tag():
     """Retrieve version from git history."""
     # Using package version according to PEP 440 -- Version Identification and Dependency Specification
