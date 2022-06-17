@@ -3,6 +3,7 @@
 import re
 import subprocess
 
+
 from setuptools import setup, find_namespace_packages
 
 def version_from_git_tag():
