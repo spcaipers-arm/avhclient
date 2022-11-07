@@ -45,12 +45,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          env
-          head_sha=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            /repos/spcaipers-arm/avhclient/pulls/${{ steps.pr_num_reader.outputs.content }} | jq .head.sha )
-          echo ${head_sha}
-          echo "PR_HEAD_SHA=${head_sha}" >> $GITHUB_ENV
+          head_sha=$(gh api -H "Accept: application/vnd.github+json" /repos/spcaipers-arm/avhclient/pulls/${{ steps.pr_num_reader.outputs.content }} | jq .head.sha )
+          echo $head_sha
+          echo "PR_HEAD_SHA=$head_sha" >> $GITHUB_ENV
 
       - name: Checkout this repo
         uses: actions/checkout@v3
