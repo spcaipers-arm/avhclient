@@ -2,9 +2,9 @@ name: Integration Tests
 on:
   workflow_run:
     workflows:
-      - Build
+      - Caller Integration Tests
     types:
-      - requested
+      - completed
 jobs:
   test_matrix:
     strategy:
@@ -28,16 +28,27 @@ jobs:
     env:
       PR_HEAD_SHA: 0
     steps:
+      - name: Download workflow artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: caller-integration-tests.yml
+          run_id: ${{ github.event.workflow_run.id }}
+
+      - name: Read the pr_num file
+        id: pr_num_reader
+        uses: juliangruber/read-file-action@v1.1.6
+        with:
+          path: ./pr_num/pr_num.txt
+
       - name: Get PR data
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           env
-          pull_requests=${{ github.event.workflow_run.pull_requests }}
-          echo $pull_requests
           head_sha=gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${GITHUB_REPOSITORY}/pulls/${pull_requests}
+            /repos/${GITHUB_REPOSITORY}/pulls/${{ steps.pr_num_reader.outputs.content }}
           echo ${head_sha}
           echo "PR_HEAD_SHA=${head_sha}" >> $GITHUB_ENV
 
