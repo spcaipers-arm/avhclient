@@ -46,9 +46,9 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           env
-          head_sha=gh api \
+          head_sha=$(gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${GITHUB_REPOSITORY}/pulls/${{ steps.pr_num_reader.outputs.content }}
+            /repos/${GITHUB_REPOSITORY}/pulls/${{ steps.pr_num_reader.outputs.content }})
           echo ${head_sha}
           echo "PR_HEAD_SHA=${head_sha}" >> $GITHUB_ENV
 
@@ -78,12 +78,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::720528183931:role/Proj-vht-assume-role
           aws-region: ${{ matrix.region }}
-
-      - name: AWS STS
-        run: |
-          env
-          aws sts assume-role-with-web-identity --role-arn arn:aws:iam::720528183931:role/Proj-vht-assume-role --region eu-west-1 --role-session-name GitHubTest --web-identity-token $ACTIONS_ID_TOKEN_REQUEST_TOKEN
-          aws sts get-caller-identity
 
       - name: Run tests
         id: avh
