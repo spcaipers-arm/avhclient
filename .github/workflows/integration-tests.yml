@@ -92,5 +92,6 @@ jobs:
           AWS_S3_BUCKET_NAME: ${{ secrets[matrix.AWS_S3_BUCKET_NAME] }}
           AWS_SECURITY_GROUP_ID: ${{ secrets[matrix.AWS_SECURITY_GROUP_ID] }}
           AWS_SUBNET_ID: ${{ secrets[matrix.AWS_SUBNET_ID] }}
+          AWS_IAM_PROFILE: ${{ secrets.AWS_IAM_PROFILE }}
         run: |
           avhclient -b aws execute --specfile AVH-GetStarted/basic/avh.yml
