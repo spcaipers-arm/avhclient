@@ -52,11 +52,10 @@ jobs:
           echo ${head_sha}
           echo "PR_HEAD_SHA=${head_sha}" >> $GITHUB_ENV
 
-#       - name: Checkout this repo
-#         uses: actions/checkout@v3
-#         with:
-#           ref: refs/remotes/pull/11/merge
-#           fetch-depth: 0
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Checkout PR
         env:
